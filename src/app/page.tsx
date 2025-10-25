@@ -1,0 +1,408 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ProductCard from "@/components/ProductCard";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/context/translations";
+
+export default function HomePage() {
+  const { language } = useLanguage();
+  const t = translations[language as "en" | "mn"];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [productsInView, setProductsInView] = useState(false);
+  const [partnersApproaching, setPartnersApproaching] = useState(false);
+
+  const slides = t.home.slides;
+
+  // Auto-slide functionality
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  // Track scroll position for products section animation
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setScrollY(scrollPosition);
+
+      // Check if products section is in view
+      const productsSection = document.getElementById("products");
+      if (productsSection) {
+        const rect = productsSection.getBoundingClientRect();
+        // Show text when products section starts appearing and hide when it's completely passed
+        const isInView =
+          rect.top <= window.innerHeight * 0.5 &&
+          rect.bottom > window.innerHeight * 0.6;
+        setProductsInView(isInView);
+      }
+
+      // Check if partners section is approaching
+      const partnersSection = document.getElementById("partners");
+      if (partnersSection) {
+        const rect = partnersSection.getBoundingClientRect();
+        // Hide animated background when partners section is about to appear
+        const approaching = rect.top <= window.innerHeight;
+        setPartnersApproaching(approaching);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+  return (
+    <div>
+      {/* Header */}
+      <Header />
+
+      {/* Hero Section with Image Slider */}
+      <section id="intro" className="relative h-screen overflow-hidden">
+        {/* Background Images */}
+        <div className="absolute inset-0">
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={slide.bgImage}
+                alt={`Hero Background ${slide.id}`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Content Overlay */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`${
+                  index === currentSlide
+                    ? "opacity-100"
+                    : "opacity-0 absolute inset-0 pointer-events-none"
+                }`}
+              >
+                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                  {slide.title}
+                </h1>
+                <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed">
+                  {slide.subtitle}
+                </p>
+                <Link
+                  href={slide.buttonLink}
+                  className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-300 text-lg"
+                >
+                  {slide.buttonText}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Dots */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="flex space-x-3">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                  index === currentSlide
+                    ? "bg-white/80"
+                    : "bg-white/40 hover:bg-white/60"
+                }`}
+              ></button>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
+        >
+          <svg
+            className="w-12 h-12"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
+        >
+          <svg
+            className="w-12 h-12"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </section>
+
+      {/* Products Section with Scroll-Based Text Animation */}
+      <section
+        id="products"
+        className="relative min-h-[300vh] bg-gradient-to-b from-[#0C6247] via-[#33B87C] to-[#0E7453]"
+      >
+        {/* Fixed Background Text - Only show when products section is in view */}
+        <div
+          className="fixed inset-0 flex items-center justify-center pointer-events-none"
+          style={{
+            opacity: productsInView ? 1 : 0,
+            transition: "opacity 0.3s ease-in-out",
+            zIndex: 0,
+          }}
+        >
+          <div
+            className="max-w-[1600px] text-center transition-all duration-500 ease-out"
+            style={{
+              // opacity: Math.max(0.1, Math.min(1, 1 - (scrollY - 800) / 800)),
+              transform: `translateY(${Math.min(
+                0,
+                (scrollY - 800) * 0.3
+              )}px) scale(${Math.max(0.8, 1 - (scrollY - 800) / 2000)})`,
+            }}
+          >
+            <h3 className="text-3xl md:text-6xl font-bold text-white mb-6">
+              {t.home.productText}
+            </h3>
+          </div>
+        </div>
+
+        {/* Scrollable Product Cards Container */}
+        <div className="relative pt-[100vh]" style={{ zIndex: 10 }}>
+          <div className="relative min-h-[200vh] max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Product Card 1 - Top Left */}
+            <ProductCard
+              image={t.home.productCards[0].image}
+              title={t.home.productCards[0].title}
+              description={t.home.productCards[0].description}
+              url={t.home.productCards[0].url}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "300px",
+                width: "30rem",
+              }}
+            />
+
+            {/* Product Card 2 - Top Right */}
+            <ProductCard
+              image={t.home.productCards[1].image}
+              title={t.home.productCards[1].title}
+              description={t.home.productCards[1].description}
+              url={t.home.productCards[1].url}
+              style={{
+                position: "absolute",
+                top: "5rem",
+                right: "300px",
+                width: "30rem",
+              }}
+            />
+
+            {/* Product Card 3 - Middle Left */}
+            <ProductCard
+              image={t.home.productCards[2].image}
+              title={t.home.productCards[2].title}
+              description={t.home.productCards[2].description}
+              url={t.home.productCards[2].url}
+              style={{
+                position: "absolute",
+                top: "80vh",
+                left: "400px",
+                width: "30rem",
+              }}
+            />
+
+            {/* Product Card 4 - Bottom Right */}
+            <ProductCard
+              image={t.home.productCards[3].image}
+              title={t.home.productCards[3].title}
+              description={t.home.productCards[3].description}
+              url={t.home.productCards[3].url}
+              style={{
+                position: "absolute",
+                top: "100vh",
+                right: "400px",
+                width: "30rem",
+              }}
+            />
+
+            <div className="h-[50vh]"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Animated Background Section */}
+      <section className="relative min-h-[200vh] overflow-hidden">
+        {/* Animated Background Image */}
+        <div
+          className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
+          style={{
+            backgroundImage: "url(/assets/images/companybggg.png)",
+            width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
+            height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
+            opacity: scrollY > 2600 && !partnersApproaching ? 1 : 0,
+          }}
+        />
+
+        {/* Dark overlay for text contrast */}
+        <div
+          className="fixed inset-0 bg-black/50 transition-opacity duration-500 ease-out pointer-events-none"
+          style={{
+            opacity:
+              scrollY > 3600 && !partnersApproaching
+                ? Math.min(0.6, (scrollY - 3600) / 800)
+                : 0,
+          }}
+        />
+
+        {/* Content Overlay */}
+        <div
+          className="fixed inset-0 flex items-center justify-end pr-60 z-10 pointer-events-none"
+          style={{
+            opacity: !partnersApproaching
+              ? Math.max(0, Math.min(1, (scrollY - 3600) / 800))
+              : 0,
+          }}
+        >
+          <div className="text-left text-white px-8 max-w-3xl pointer-events-auto">
+            <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-wide">
+              {t.home.companyTitle}
+            </h2>
+            <p className="text-lg md:text-xl mb-8 leading-relaxed">
+              {t.home.companyText}
+            </p>
+
+            <Link
+              href="/company"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+            >
+              {t.home.learnMore} →{" "}
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll indicator to show section height */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none" />
+      </section>
+
+      {/* Partner Companies Section */}
+      <section id="partners" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
+            {t.home.partnersTitle}
+          </h2>
+
+          {/* Animated Logo Marquee */}
+          <div className="overflow-hidden relative">
+            <div className="flex animate-scroll whitespace-nowrap">
+              {/* First set of logos */}
+              <div className="flex items-center justify-center min-w-0 shrink-0">
+                <img
+                  src="/assets/images/mobi.png"
+                  alt="Mobi"
+                  className="h-16 w-auto mx-12 object-contain   hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/bodi.png"
+                  alt="Bodi"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/callpro.png"
+                  alt="CallPro"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/interworks.png"
+                  alt="Interworks"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/frc.png"
+                  alt="FRC"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+              </div>
+
+              {/* Duplicate set for seamless loop */}
+              <div className="flex items-center justify-center min-w-0 shrink-0">
+                <img
+                  src="/assets/images/mobi.png"
+                  alt="Mobi"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/bodi.png"
+                  alt="Bodi"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/callpro.png"
+                  alt="CallPro"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/interworks.png"
+                  alt="Interworks"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+                <img
+                  src="/assets/images/frc.png"
+                  alt="FRC"
+                  className="h-16 w-auto mx-12 object-contain grayscale-0 hover:grayscale-0 transition-all duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
