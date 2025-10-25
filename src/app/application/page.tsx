@@ -435,7 +435,7 @@ export default function ApplicationPage() {
             <div className="bg-white rounded-3xl p-8 shadow-2xl">
               <div className="bg-white p-4 rounded-2xl mb-6">
                 <img
-                  src="/assets/images/worksqr.png"
+                  src="/assets/images/QRR.png"
                   alt="Download QR Code"
                   className="w-64 h-64 object-contain"
                 />
