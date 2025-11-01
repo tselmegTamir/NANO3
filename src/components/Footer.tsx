@@ -17,8 +17,13 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
 
   // Handle company page navigation
   const handleCompanyLinkClick = (
@@ -32,44 +37,10 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
       // Extract hash from URL
       const hash = url.split("#")[1];
 
-      // Use global navigation function if available
-      if ((window as any).navigateToCompanySection) {
-        (window as any).navigateToCompanySection(hash);
-      } else {
-        // Fallback: manual scroll calculation
-        console.log("Fallback navigation for:", hash);
-
-        const hashToScrollMapping = {
-          about: 20,
-          achievements: 35,
-          history: 50,
-          structure: 62,
-        };
-
-        if (hash === "team") {
-          const teamElement = document.getElementById("team-section");
-          if (teamElement) {
-            teamElement.scrollIntoView({ behavior: "smooth" });
-          }
-        } else if (hash === "documents") {
-          const documentsElement = document.getElementById("documents-section");
-          if (documentsElement) {
-            documentsElement.scrollIntoView({ behavior: "smooth" });
-          }
-        } else if (
-          hashToScrollMapping[hash as keyof typeof hashToScrollMapping]
-        ) {
-          const targetPercentage =
-            hashToScrollMapping[hash as keyof typeof hashToScrollMapping];
-          const splineContainerHeight = window.innerHeight * 5;
-          const targetScrollPosition =
-            (targetPercentage / 100) * splineContainerHeight;
-
-          window.scrollTo({
-            top: targetScrollPosition,
-            behavior: "smooth",
-          });
-        }
+      // Direct element scrolling for all sections
+      const element = document.getElementById(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
     // If not on company page, let the normal Link navigation happen
@@ -85,10 +56,51 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: "success",
+          message:
+            language === "en"
+              ? "Message sent successfully!"
+              : "Мессеж амжилттай илгээгдлээ!",
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setSubmitStatus({
+          type: "error",
+          message:
+            language === "en"
+              ? "Failed to send message. Please try again."
+              : "Мессеж илгээхэд алдаа гарлаа. Дахин оролдоно уу.",
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message:
+          language === "en"
+            ? "An error occurred. Please try again."
+            : "Алдаа гарлаа. Дахин оролдоно уу.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const t = translations[language as "en" | "mn"];
@@ -99,7 +111,7 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
       links: [
         { name: t.footer.home.section1, url: "/#intro" },
         { name: t.footer.home.section2, url: "/#products" },
-        { name: t.footer.home.section3, url: "/#about" },
+        { name: t.footer.home.section3, url: "/#companysection" },
         { name: t.footer.home.section4, url: "/#partners" },
       ],
     },
@@ -115,19 +127,31 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
     company: {
       title: t.footer.company.title,
       links: [
-        { name: t.footer.company.section1, url: "/company#about" }, // scrolls to 20%
-        { name: t.footer.company.section2, url: "/company#achievements" }, // scrolls to 35%
-        { name: t.footer.company.section3, url: "/company#history" }, // scrolls to 50%
-        { name: t.footer.company.section5, url: "/company#team" }, // separate id outside spline scene scroll
+        { name: t.footer.company.section1, url: "/company#hero" },
+        { name: t.footer.company.section2, url: "/company#mission" },
+        { name: t.footer.company.section3, url: "/company#corevalues" },
+        { name: t.footer.company.section4, url: "/company#infosec" },
+        { name: t.footer.company.section5, url: "/company#team" },
         {
           name: t.footer.company.section6,
           url: "/company#documents",
         },
       ],
     },
-    tools: {
-      title: t.footer.invest.title,
-      links: [{ name: t.footer.invest.section1, url: "/invest#trust" }],
+    app: {
+      title: t.footer.app.title,
+      links: [
+        { name: t.footer.app.section1, url: "/application#screens" },
+        {
+          name: t.footer.app.section2,
+          url: "/application#easier-loan-services",
+        },
+        {
+          name: t.footer.app.section3,
+          url: "/application#rewards-for-customers",
+        },
+        { name: t.footer.app.section4, url: "/application#download" },
+      ],
     },
   };
 
@@ -160,31 +184,63 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
               <h4 className="text-2xl text-white font-semibold mb-6">
                 {t.footer.form.title}
               </h4>
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   placeholder={t.footer.form.name}
+                  required
                   className="w-full p-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60"
                 />
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder={t.footer.form.email}
+                  required
                   className="w-full p-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60"
                 />
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   placeholder={t.footer.form.message}
                   rows={4}
+                  required
                   className="w-full p-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60"
                 ></textarea>
+
+                {submitStatus.type && (
+                  <div
+                    className={`p-3 rounded-lg text-sm ${
+                      submitStatus.type === "success"
+                        ? "bg-green-500/20 text-white border border-green-500/30"
+                        : "bg-red-500/20 text-white border border-red-500/30"
+                    }`}
+                  >
+                    {submitStatus.message}
+                  </div>
+                )}
+
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className={`w-full ${
                     primaryColor === "teal"
                       ? "bg-white hover:bg-[#86f5fc] text-gray-800 hover:text-white"
                       : "bg-[#D7FFE3] hover:bg-[#72D287]/80"
-                  } p-4 rounded-lg font-semibold transition-colors`}
+                  } p-4 rounded-lg font-semibold transition-colors ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
-                  {t.footer.form.btn}
+                  {isSubmitting
+                    ? language === "en"
+                      ? "Sending..."
+                      : "Илгээж байна..."
+                    : t.footer.form.btn}
                 </button>
               </form>
             </div>
@@ -263,13 +319,13 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
                 </ul>
               </div>
 
-              {/* Tools Column */}
+              {/* App Column */}
               <div>
                 <h3 className="font-semibold text-gray-800 mb-4">
-                  {footerSections.tools.title}
+                  {footerSections.app.title}
                 </h3>
                 <ul className="space-y-2">
-                  {footerSections.tools.links.map((link, index) => (
+                  {footerSections.app.links.map((link, index) => (
                     <li key={index}>
                       <Link
                         href={link.url}

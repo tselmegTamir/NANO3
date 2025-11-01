@@ -91,7 +91,10 @@ export default function ApplicationPage() {
       <Header />
 
       {/* Hero Section with App Slider */}
-      <section className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      <section
+        id="screens"
+        className="relative w-full bg-gradient-to-br from-gray-50 to-gray-100"
+      >
         {/* Header */}
         <div className="relative z-10 pt-32 pb-12 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
@@ -126,44 +129,29 @@ export default function ApplicationPage() {
           <div className="flex items-center justify-center gap-4 md:gap-6">
             {/* Left Adjacent Screen (Smaller) */}
             <div className="relative w-[200px] h-[400px] opacity-50 transition-all duration-500">
-              <div className="relative w-full h-full overflow-hidden rounded-[2rem]">
-                <img
-                  src={`/assets/images/screen${prevSlideIndex + 1}.jpg`}
-                  alt={`App Screen ${prevSlideIndex + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <img
+                src={`/assets/images/screen${prevSlideIndex + 1}.jpg`}
+                alt={`App Screen ${prevSlideIndex + 1}`}
+                className="w-full h-full object-contain rounded-[2rem]"
+              />
             </div>
 
-            {/* Center Main Screen (Larger) */}
+            {/* Center Main Screen (Larger) - Shows mobile{i}.png with border included */}
             <div className="relative w-[320px] h-[650px] flex-shrink-0">
-              <div className="absolute inset-0 overflow-hidden rounded-[3rem]">
-                <img
-                  src={`/assets/images/screen${currentSlide + 1}.jpg`}
-                  alt={`App Screen ${currentSlide + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* iPhone Border Overlay */}
-              <div className="absolute inset-0 pointer-events-none">
-                <img
-                  src="/assets/images/iphoneborderrr.png"
-                  alt="iPhone Frame"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+              <img
+                src={`/assets/images/mobile${currentSlide + 1}.png`}
+                alt={`App Screen ${currentSlide + 1}`}
+                className="w-full h-full object-contain"
+              />
             </div>
 
             {/* Right Adjacent Screen (Smaller) */}
             <div className="relative w-[200px] h-[400px] opacity-50 transition-all duration-500">
-              <div className="relative w-full h-full overflow-hidden rounded-[2rem]">
-                <img
-                  src={`/assets/images/screen${nextSlideIndex + 1}.jpg`}
-                  alt={`App Screen ${nextSlideIndex + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <img
+                src={`/assets/images/screen${nextSlideIndex + 1}.jpg`}
+                alt={`App Screen ${nextSlideIndex + 1}`}
+                className="w-full h-full object-contain rounded-[2rem]"
+              />
             </div>
           </div>
 
@@ -189,7 +177,7 @@ export default function ApplicationPage() {
         </div>
 
         {/* Slide Indicators */}
-        <div className="relative z-10 flex justify-center gap-3 pb-12">
+        <div className="relative z-10 flex justify-center gap-3 pb-12 mt-10">
           {Array.from({ length: totalSlides }).map((_, index) => (
             <button
               key={index}
@@ -206,8 +194,9 @@ export default function ApplicationPage() {
 
       {/* Digital Solutions Section - Right Layout */}
       <section
+        id="easier-loan-services"
         ref={rightIllustrationRef}
-        className="py-24 bg-gray-50 overflow-hidden"
+        className="py-24 bg-white overflow-hidden"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -313,6 +302,7 @@ export default function ApplicationPage() {
 
       {/* Troubleshooting Services Section - Left Layout */}
       <section
+        id="rewards-for-customers"
         ref={leftIllustrationRef}
         className="py-24 bg-white overflow-hidden"
       >
@@ -419,7 +409,7 @@ export default function ApplicationPage() {
       </section>
 
       {/* Download Section */}
-      <section className="py-24 bg-[#2DADB1]">
+      <section id="download" className="py-24 bg-[#2DADB1]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">

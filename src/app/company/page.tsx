@@ -97,7 +97,7 @@ export default function CompanyPage() {
       <Header />
 
       {/* Hero Section with Image Background */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section id="hero" className="relative w-full h-screen overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <img
@@ -135,7 +135,9 @@ export default function CompanyPage() {
       </section>
 
       {/* Company Introduction Section */}
-      <section className="py-24 bg-white">
+      <section id="mission" className="py-24 bg-white">
+        {/* Also serves as aboutus anchor */}
+        <div id="aboutus"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold text-[#0E7453] mb-8">
@@ -149,7 +151,7 @@ export default function CompanyPage() {
       </section>
 
       {/* Company Values - Interactive Cards */}
-      <section className="py-24 bg-gray-50">
+      <section id="corevalues" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-5xl font-bold text-[#0E7453] text-center mb-16">
             {t.company.valuesTitle}
@@ -386,7 +388,7 @@ export default function CompanyPage() {
       </section>
 
       {/* Staff Profiles Section - Хамт олон */}
-      <section className="py-24 bg-white">
+      <section id="team" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-16">

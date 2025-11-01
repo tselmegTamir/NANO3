@@ -15,11 +15,13 @@
     "@splinetool/runtime": "^1.9.30",
     "gsap": "^3.13.0",
     "next": "14.2.15",
+    "nodemailer": "^7.0.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.16.11",
+    "@types/nodemailer": "^7.0.3",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",

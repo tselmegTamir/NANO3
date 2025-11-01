@@ -325,17 +325,24 @@ export const translations = {
         section4: "Business Loan",
       },
       company: {
-        title: "Company",
-        section1: "Who are we?",
-        section2: "Numbers",
-        section3: "Start",
-        section4: "Company Structure",
-        section5: "We",
-        section6: "Rules",
+        title: "About the Company",
+        section1: "Mission and Vision",
+        section2: "About Us",
+        section3: "Core Values",
+        section4: "Information Security",
+        section5: "Our Team",
+        section6: "Governance Policies and Regulations",
       },
       invest: {
         title: "Invest",
         section1: "Trust",
+      },
+      app: {
+        title: "Mobile App",
+        section1: "Screens",
+        section2: "Easier Loan Services",
+        section3: "Rewards for Customers",
+        section4: "Download"
       },
     },
 
@@ -736,15 +743,23 @@ export const translations = {
       },
       company: {
         title: "Компанийн тухай",
-        section1: "Бид хэн бэ?",
-        section2: "Тоон амжилтууд",
-        section3: "Эхлэл",
+        section1: "Зорилго, Алсын хараа",
+        section2: "Бидний тухай",
+        section3: "Үнэт зүйлс",
+        section4: "Мэдээллийн аюулгүй байдал",
         section5: "Хамт олон",
         section6: "Засаглалтай холбоотой бодлого, дүрэм журам",
       },
       invest: {
         title: "Хөрөнгө оруулалт",
         section1: "Итгэлцлийн үйлчилгээ",
+      },
+      app: {
+        title: "Дижитал Зээл",
+        section1: "Дэлгэцийн зураг",
+        section2: "Илүү хялбар зээлийн үйлчилгээ",
+        section3: "Хэрэглэгчид зориулсан урамшуулал",
+        section4: "Татаж авах"
       },
     },
 

@@ -114,12 +114,14 @@ export default function HomePage() {
                 <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed">
                   {slide.subtitle}
                 </p>
-                <Link
-                  href={slide.buttonLink}
-                  className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-300 text-lg"
-                >
-                  {slide.buttonText}
-                </Link>
+                <button>
+                  <Link
+                    href={slide.buttonLink}
+                    className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-300 text-lg"
+                  >
+                    {slide.buttonText}
+                  </Link>
+                </button>
               </div>
             ))}
           </div>
@@ -275,59 +277,72 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Animated Background Section */}
-      <section className="relative min-h-[200vh] overflow-hidden">
-        {/* Animated Background Image */}
-        <div
-          className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
-          style={{
-            backgroundImage: "url(/assets/images/companybggg.png)",
-            width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
-            height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
-            opacity: scrollY > 2600 && !partnersApproaching ? 1 : 0,
-          }}
-        />
+      {/* Animated Background Section - Only render when scrollY > 2600 */}
+      {scrollY > 2600 ? (
+        <section
+          id="companysection"
+          className="relative min-h-[200vh] overflow-hidden"
+        >
+          {/* Animated Background Image */}
+          <div
+            className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
+            style={{
+              backgroundImage: "url(/assets/images/companybggg.png)",
+              width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
+              height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
+              opacity: partnersApproaching
+                ? 0
+                : Math.min(1, (scrollY - 2600) / 400),
+            }}
+          />
 
-        {/* Dark overlay for text contrast */}
-        <div
-          className="fixed inset-0 bg-black/50 transition-opacity duration-500 ease-out pointer-events-none"
-          style={{
-            opacity:
-              scrollY > 3600 && !partnersApproaching
+          {/* Dark overlay for text contrast */}
+          <div
+            className="fixed inset-0 bg-black/50 transition-opacity duration-500 ease-out pointer-events-none"
+            style={{
+              opacity: partnersApproaching
+                ? 0
+                : scrollY > 3600
                 ? Math.min(0.6, (scrollY - 3600) / 800)
                 : 0,
-          }}
-        />
+            }}
+          />
 
-        {/* Content Overlay */}
-        <div
-          className="fixed inset-0 flex items-center justify-end pr-60 z-10 pointer-events-none"
-          style={{
-            opacity: !partnersApproaching
-              ? Math.max(0, Math.min(1, (scrollY - 3600) / 800))
-              : 0,
-          }}
-        >
-          <div className="text-left text-white px-8 max-w-3xl pointer-events-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-wide">
-              {t.home.companyTitle}
-            </h2>
-            <p className="text-lg md:text-xl mb-8 leading-relaxed">
-              {t.home.companyText}
-            </p>
-
-            <Link
-              href="/company"
-              className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+          {/* Content Overlay */}
+          <div
+            className="fixed inset-0 flex items-center justify-end pr-60 z-10 pointer-events-none"
+            style={{
+              opacity: partnersApproaching
+                ? 0
+                : Math.max(0, Math.min(1, (scrollY - 3600) / 800)),
+            }}
+          >
+            <div
+              className="text-left text-white px-8 max-w-3xl"
+              style={{
+                pointerEvents: partnersApproaching ? "none" : "auto",
+              }}
             >
-              {t.home.learnMore} →{" "}
-            </Link>
-          </div>
-        </div>
+              <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-wide">
+                {t.home.companyTitle}
+              </h2>
+              <p className="text-lg md:text-xl mb-8 leading-relaxed">
+                {t.home.companyText}
+              </p>
 
-        {/* Scroll indicator to show section height */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none" />
-      </section>
+              <Link
+                href="/company"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+              >
+                {t.home.learnMore} →{" "}
+              </Link>
+            </div>
+          </div>
+
+          {/* Scroll indicator to show section height */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none" />
+        </section>
+      ) : null}
 
       {/* Partner Companies Section */}
       <section id="partners" className="py-16 bg-gray-50">
