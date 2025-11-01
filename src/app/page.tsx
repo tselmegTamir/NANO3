@@ -128,7 +128,7 @@ export default function HomePage() {
         </div>
 
         {/* Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
           <div className="flex space-x-3">
             {slides.map((_, index) => (
               <button
@@ -144,10 +144,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows - Desktop */}
         <button
           onClick={prevSlide}
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
+          className="hidden md:block absolute left-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
         >
           <svg
             className="w-12 h-12"
@@ -165,7 +165,7 @@ export default function HomePage() {
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
+          className="hidden md:block absolute right-8 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors duration-300"
         >
           <svg
             className="w-12 h-12"
@@ -181,16 +181,71 @@ export default function HomePage() {
             />
           </svg>
         </button>
+
+        {/* Navigation Arrows - Mobile (Adjacent to dots) */}
+        <div className="md:hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex items-center space-x-6">
+          <button
+            onClick={prevSlide}
+            className="text-white/70 hover:text-white transition-colors duration-300"
+          >
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+
+          <div className="flex space-x-3">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                  index === currentSlide
+                    ? "bg-white/80"
+                    : "bg-white/40 hover:bg-white/60"
+                }`}
+              ></button>
+            ))}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            className="text-white/70 hover:text-white transition-colors duration-300"
+          >
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
       </section>
 
       {/* Products Section with Scroll-Based Text Animation */}
       <section
         id="products"
-        className="relative min-h-[300vh] bg-gradient-to-b from-[#0C6247] via-[#33B87C] to-[#0E7453]"
+        className="relative min-h-[300vh] lg:min-h-[300vh] bg-gradient-to-b from-[#0C6247] via-[#33B87C] to-[#0E7453]"
       >
-        {/* Fixed Background Text - Only show when products section is in view */}
+        {/* Fixed Background Text - Only show when products section is in view - Desktop only */}
         <div
-          className="fixed inset-0 flex items-center justify-center pointer-events-none"
+          className="hidden lg:flex fixed inset-0 items-center justify-center pointer-events-none"
           style={{
             opacity: productsInView ? 1 : 0,
             transition: "opacity 0.3s ease-in-out",
@@ -207,14 +262,55 @@ export default function HomePage() {
               )}px) scale(${Math.max(0.8, 1 - (scrollY - 800) / 2000)})`,
             }}
           >
-            <h3 className="text-3xl md:text-6xl font-bold text-white mb-6">
+            <h3 className="text-3xl lg:text-6xl font-bold text-white mb-6">
               {t.home.productText}
             </h3>
           </div>
         </div>
 
-        {/* Scrollable Product Cards Container */}
-        <div className="relative pt-[100vh]" style={{ zIndex: 10 }}>
+        {/* Mobile & Tablet: Column Layout */}
+        <div className="lg:hidden relative py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Mobile & Tablet Title */}
+            <h3 className="text-3xl font-bold text-white mb-8 text-center">
+              {t.home.productText}
+            </h3>
+
+            {/* Product Cards Column */}
+            <div className="flex flex-col space-y-6">
+              <ProductCard
+                image={t.home.productCards[0].image}
+                title={t.home.productCards[0].title}
+                description={t.home.productCards[0].description}
+                url={t.home.productCards[0].url}
+              />
+              <ProductCard
+                image={t.home.productCards[1].image}
+                title={t.home.productCards[1].title}
+                description={t.home.productCards[1].description}
+                url={t.home.productCards[1].url}
+              />
+              <ProductCard
+                image={t.home.productCards[2].image}
+                title={t.home.productCards[2].title}
+                description={t.home.productCards[2].description}
+                url={t.home.productCards[2].url}
+              />
+              <ProductCard
+                image={t.home.productCards[3].image}
+                title={t.home.productCards[3].title}
+                description={t.home.productCards[3].description}
+                url={t.home.productCards[3].url}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: Scrollable Product Cards Container */}
+        <div
+          className="hidden lg:block relative pt-[100vh]"
+          style={{ zIndex: 10 }}
+        >
           <div className="relative min-h-[200vh] max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Product Card 1 - Top Left */}
             <ProductCard
@@ -281,13 +377,26 @@ export default function HomePage() {
       {scrollY > 2600 ? (
         <section
           id="companysection"
-          className="relative min-h-[200vh] overflow-hidden"
+          className="relative min-h-[200vh] lg:min-h-[200vh] overflow-hidden"
         >
-          {/* Animated Background Image */}
+          {/* Animated Background Image - Desktop */}
           <div
-            className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
+            className="hidden lg:block fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
             style={{
               backgroundImage: "url(/assets/images/companybggg.png)",
+              width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
+              height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
+              opacity: partnersApproaching
+                ? 0
+                : Math.min(1, (scrollY - 2600) / 400),
+            }}
+          />
+
+          {/* Animated Background Image - Mobile & Tablet */}
+          <div
+            className="lg:hidden fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
+            style={{
+              backgroundImage: "url(/assets/images/mobilebg2.png)",
               width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
               height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
               opacity: partnersApproaching
@@ -308,9 +417,9 @@ export default function HomePage() {
             }}
           />
 
-          {/* Content Overlay */}
+          {/* Content Overlay - Desktop */}
           <div
-            className="fixed inset-0 flex items-center justify-end pr-60 z-10 pointer-events-none"
+            className="hidden lg:flex fixed inset-0 items-center justify-end pr-60 z-10 pointer-events-none"
             style={{
               opacity: partnersApproaching
                 ? 0
@@ -323,16 +432,47 @@ export default function HomePage() {
                 pointerEvents: partnersApproaching ? "none" : "auto",
               }}
             >
-              <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-wide">
+              <h2 className="text-4xl lg:text-6xl font-bold mb-8 tracking-wide">
                 {t.home.companyTitle}
               </h2>
-              <p className="text-lg md:text-xl mb-8 leading-relaxed">
+              <p className="text-lg lg:text-xl mb-8 leading-relaxed">
                 {t.home.companyText}
               </p>
 
               <Link
                 href="/company"
                 className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+              >
+                {t.home.learnMore} →{" "}
+              </Link>
+            </div>
+          </div>
+
+          {/* Content Overlay - Mobile & Tablet */}
+          <div
+            className="lg:hidden fixed inset-0 flex items-center justify-center px-6 z-10 pointer-events-none"
+            style={{
+              opacity: partnersApproaching
+                ? 0
+                : Math.max(0, Math.min(1, (scrollY - 3600) / 800)),
+            }}
+          >
+            <div
+              className="text-center text-white max-w-lg"
+              style={{
+                pointerEvents: partnersApproaching ? "none" : "auto",
+              }}
+            >
+              <h2 className="text-2xl font-bold mb-4 tracking-wide">
+                {t.home.companyTitle}
+              </h2>
+              <p className="text-sm mb-6 leading-relaxed">
+                {t.home.companyText}
+              </p>
+
+              <Link
+                href="/company"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-sm transition-all duration-300 transform hover:scale-105"
               >
                 {t.home.learnMore} →{" "}
               </Link>

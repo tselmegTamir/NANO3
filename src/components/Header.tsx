@@ -12,6 +12,8 @@ const Header = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
+  const [isMobileProductDropdownOpen, setIsMobileProductDropdownOpen] =
+    useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const productDropdownRef = useRef<HTMLDivElement>(null);
   const hideDropdownTimer = useRef<NodeJS.Timeout | null>(null);
@@ -296,7 +298,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation - Glass Background */}
-          <nav className="hidden md:flex items-center space-x-6 bg-white/10 backdrop-blur-md px-6 py-2 rounded-lg border border-white/20">
+          <nav className="hidden md:flex items-center space-x-[2px] lg:space-x-6 bg-white/10 backdrop-blur-md px-6 py-2 rounded-lg border border-white/20">
             {navigationItems.map((item) => (
               <div
                 key={item.name}
@@ -312,7 +314,7 @@ const Header = () => {
                   // Non-clickable button for items with dropdown
                   <button
                     type="button"
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-[10px] lg:text-sm font-medium transition-colors duration-200 ${
                       isProductDropdownOpen
                         ? "text-[#0E7453] bg-[#0E7453]/10 font-semibold"
                         : "text-gray-700 hover:text-[#0E7453] hover:bg-white/10"
@@ -325,7 +327,7 @@ const Header = () => {
                   // Regular link for other items
                   <Link
                     href={item.href}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-[10px] lg:text-sm font-medium transition-colors duration-200 ${
                       isActivePage(item.href)
                         ? "text-[#0E7453] bg-[#0E7453]/10 font-semibold"
                         : "text-gray-700 hover:text-[#0E7453] hover:bg-white/10"
@@ -399,7 +401,7 @@ const Header = () => {
                 height={16}
                 className="rounded-sm object-cover"
               />
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-[10px] lg:text-sm font-medium text-gray-700">
                 {currentLangCode}
               </span>
             </button>
@@ -444,25 +446,97 @@ const Header = () => {
             </button>
           </div>
         </div>
-
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white/20 backdrop-blur-md rounded-lg mt-2 border border-white/30">
               {navigationItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-white/30 ${
-                    isActivePage(item.href)
-                      ? "text-[#0E7453] bg-[#0E7453]/10 font-semibold"
-                      : "text-gray-700 hover:text-[#0E7453]"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {NavigationIcons[item.icon as keyof typeof NavigationIcons]}
-                  <span>{item.name}</span>
-                </Link>
+                <div key={item.name}>
+                  {item.hasDropdown ? (
+                    // Products with dropdown
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setIsMobileProductDropdownOpen(
+                            !isMobileProductDropdownOpen
+                          )
+                        }
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-white/30 ${
+                          isMobileProductDropdownOpen
+                            ? "text-[#0E7453] bg-[#0E7453]/10 font-semibold"
+                            : "text-gray-700 hover:text-[#0E7453]"
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          {
+                            NavigationIcons[
+                              item.icon as keyof typeof NavigationIcons
+                            ]
+                          }
+                          <span>{item.name}</span>
+                        </div>
+                        <svg
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isMobileProductDropdownOpen ? "rotate-180" : ""
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Mobile Product Dropdown */}
+                      {isMobileProductDropdownOpen && (
+                        <div className="mt-2 ml-4 space-y-1 bg-white/10 rounded-lg p-2">
+                          {productDropdownItems.map((product) => (
+                            <Link
+                              key={product.name}
+                              href={product.href}
+                              className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-gray-600 hover:text-[#0E7453] hover:bg-white/20"
+                              onClick={() => {
+                                setIsMenuOpen(false);
+                                setIsMobileProductDropdownOpen(false);
+                              }}
+                            >
+                              {
+                                ProductIcons[
+                                  product.icon as keyof typeof ProductIcons
+                                ]
+                              }
+                              <span>{product.name}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    // Regular navigation items
+                    <Link
+                      href={item.href}
+                      className={`flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-white/30 ${
+                        isActivePage(item.href)
+                          ? "text-[#0E7453] bg-[#0E7453]/10 font-semibold"
+                          : "text-gray-700 hover:text-[#0E7453]"
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {
+                        NavigationIcons[
+                          item.icon as keyof typeof NavigationIcons
+                        ]
+                      }
+                      <span>{item.name}</span>
+                    </Link>
+                  )}
+                </div>
               ))}
 
               {/* Mobile Language Toggle */}
