@@ -264,15 +264,15 @@ function LoanCalculator() {
           <p className="text-sm font-medium text-gray-600 mb-2">
             {t.products.calculator.monthlyPayment}
           </p>
-          <p className="text-4xl font-bold text-gray-900">
+          <p className="text-2xl sm:text-4xl font-bold text-gray-900 break-words">
             {formatNumber(payment.monthlyPayment)} ₮
           </p>
         </div>
 
         {/* Total Breakdown */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900 mb-2">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 break-words">
               {formatNumber(payment.totalInterest)} ₮
             </p>
             <p className="text-sm text-gray-600">
@@ -280,7 +280,7 @@ function LoanCalculator() {
             </p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900 mb-2">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 break-words">
               {formatNumber(payment.totalPayment)} ₮
             </p>
             <p className="text-sm text-gray-600">
