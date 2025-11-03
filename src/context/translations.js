@@ -23,7 +23,7 @@ export const translations = {
         {
           id: 2,
           bgImage: "/assets/images/cover5.jpg",
-          title: "CORPORATE GOVERNANCE CODE",
+          title: "Corporate Governance Code",
           subtitle:
             "An organization with a corporate governance code compliant with international standards, valuing transparency and responsible management.",
           buttonText: "Code",
@@ -179,6 +179,7 @@ export const translations = {
       teamDescription:
         "We have highly qualified employees with a wealth of experience in the field. The team consists of experienced professionals who have worked for many years in the banking and financial sectors.",
       structureButton: "Company Structure",
+      structureTitle: "Company Structure",
       structureModalTitle: "NANO NBFI's",
       structureModalSubtitle: "STRUCTURE AND ORGANIZATION",
       documentsTitle: "Governance Policies, Rules, and Regulations",
@@ -330,7 +331,7 @@ export const translations = {
         section2: "About Us",
         section3: "Core Values",
         section4: "Information Security",
-        section5: "Our Team",
+        section5: "Company Structure",
         section6: "Governance Policies and Regulations",
       },
       invest: {
@@ -342,7 +343,7 @@ export const translations = {
         section1: "Screens",
         section2: "Easier Loan Services",
         section3: "Rewards for Customers",
-        section4: "Download"
+        section4: "Download",
       },
     },
 
@@ -458,7 +459,7 @@ export const translations = {
         {
           id: 2,
           bgImage: "/assets/images/cover5.jpg",
-          title: "КОМПАНИЙН ЗАСАГЛАЛЫН КОДЕКС",
+          title: "Компаний засаглалын кодекс",
           subtitle:
             "Олон улсын жишигт нийцсэн компанийн засаглалын кодекстой, ил тод ба хариуцлагатай удирдлагыг эрхэмлэдэг байгууллага",
           buttonText: "Кодекс",
@@ -595,6 +596,7 @@ export const translations = {
       teamDescription:
         "Бид салбартаа өндөр ур чадвартай, арвин туршлагатай ажилтнуудтай. Баг нь банк, санхүүгийн салбарт олон жил ажилласан туршлагатай мэргэжилтнүүдээс бүрдэнэ.",
       structureButton: "Компанийн бүтэц",
+      structureTitle: "Компанийн бүтэц",
       structureModalTitle: "НАНО ББСБ-ийн",
       structureModalSubtitle: "БҮТЭЦ, ЗОХИОН БАЙГУУЛАЛТ",
       documentsTitle: "Засаглалтай холбоотой бодлого, дүрэм, журам",
@@ -747,7 +749,7 @@ export const translations = {
         section2: "Бидний тухай",
         section3: "Үнэт зүйлс",
         section4: "Мэдээллийн аюулгүй байдал",
-        section5: "Хамт олон",
+        section5: "Компанийн бүтэц",
         section6: "Засаглалтай холбоотой бодлого, дүрэм журам",
       },
       invest: {
@@ -759,7 +761,7 @@ export const translations = {
         section1: "Дэлгэцийн зураг",
         section2: "Илүү хялбар зээлийн үйлчилгээ",
         section3: "Хэрэглэгчид зориулсан урамшуулал",
-        section4: "Татаж авах"
+        section4: "Татаж авах",
       },
     },
 

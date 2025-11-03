@@ -131,7 +131,7 @@ const Footer: React.FC<FooterProps> = ({ primaryColor = "emerald" }) => {
         { name: t.footer.company.section2, url: "/company#mission" },
         { name: t.footer.company.section3, url: "/company#corevalues" },
         { name: t.footer.company.section4, url: "/company#infosec" },
-        { name: t.footer.company.section5, url: "/company#team" },
+        { name: t.footer.company.section5, url: "/company#structure" },
         {
           name: t.footer.company.section6,
           url: "/company#documents",

@@ -12,12 +12,74 @@ export default function HomePage() {
   const { language } = useLanguage();
   const t = translations[language as "en" | "mn"];
 
+  // Add refs for sections
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const productsSectionRef = useRef<HTMLElement>(null);
+  const companySectionRef = useRef<HTMLElement>(null);
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [productsInView, setProductsInView] = useState(false);
   const [partnersApproaching, setPartnersApproaching] = useState(false);
+  const [animationTriggers, setAnimationTriggers] = useState({
+    bgStart: 2600,
+    contentStart: 3600,
+  });
+  const [cardDimensions, setCardDimensions] = useState({
+    cardSize: 480, // 1.5 * x (where x = 320)
+    gap: 320, // x value
+  });
+  const [scaleFactor, setScaleFactor] = useState(1); // Track display scale
 
   const slides = t.home.slides;
+
+  // Calculate dynamic animation triggers and card dimensions based on section heights
+  useEffect(() => {
+    const calculateTriggers = () => {
+      // Get actual rendered heights of sections
+      const heroHeight = heroSectionRef.current?.offsetHeight || 0;
+      const productsHeight = productsSectionRef.current?.offsetHeight || 0;
+
+      // Calculate scale factor based on viewport height
+      // Base hero height at 100% scale is ~1000px
+      const baseViewportHeight = 500;
+      const currentScaleFactor = heroHeight / baseViewportHeight;
+      setScaleFactor(currentScaleFactor);
+
+      console.log("Hero Section Height:", heroHeight);
+      console.log("Products Section Height:", productsHeight);
+      console.log("Scale Factor:", currentScaleFactor);
+
+      // Calculate card dimensions based on products section height
+      // 2.5 * cardSize = 40% of products section height
+      // cardSize = (0.4 * productsHeight) / 2.5
+      const cardSize = (0.4 * productsHeight) / 2.5;
+      const gap = cardSize / 1.5; // Since cardSize = 1.5 * gap
+
+      setCardDimensions({
+        cardSize: Math.round(cardSize),
+        gap: Math.round(gap),
+      });
+
+      console.log("Card Size:", Math.round(cardSize));
+      console.log("Gap:", Math.round(gap));
+
+      // Calculate trigger points based on actual section heights
+      const bgStart = heroHeight + productsHeight - 1000;
+      const contentStart = heroHeight + productsHeight - 300;
+
+      setAnimationTriggers({
+        bgStart,
+        contentStart,
+      });
+    };
+
+    // Calculate after DOM is ready
+    calculateTriggers();
+    window.addEventListener("resize", calculateTriggers);
+
+    return () => window.removeEventListener("resize", calculateTriggers);
+  }, []);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -72,11 +134,14 @@ export default function HomePage() {
   };
   return (
     <div>
-      {/* Header */}
       <Header />
 
       {/* Hero Section with Image Slider */}
-      <section id="intro" className="relative h-screen overflow-hidden">
+      <section
+        ref={heroSectionRef}
+        id="intro"
+        className="relative h-screen overflow-hidden"
+      >
         {/* Background Images */}
         <div className="absolute inset-0">
           {slides.map((slide, index) => (
@@ -108,7 +173,7 @@ export default function HomePage() {
                     : "opacity-0 absolute inset-0 pointer-events-none"
                 }`}
               >
-                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                <h1 className="text-4xl md:text-7xl font-bold text-white mb-6">
                   {slide.title}
                 </h1>
                 <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed">
@@ -240,6 +305,7 @@ export default function HomePage() {
 
       {/* Products Section with Scroll-Based Text Animation */}
       <section
+        ref={productsSectionRef}
         id="products"
         className="relative min-h-[300vh] lg:min-h-[300vh] bg-gradient-to-b from-[#0C6247] via-[#33B87C] to-[#0E7453]"
       >
@@ -318,53 +384,63 @@ export default function HomePage() {
               title={t.home.productCards[0].title}
               description={t.home.productCards[0].description}
               url={t.home.productCards[0].url}
+              cardSize={cardDimensions.cardSize}
               style={{
                 position: "absolute",
                 top: 0,
-                left: "300px",
-                width: "30rem",
+                left: `${cardDimensions.gap}px`,
+                width: `${cardDimensions.cardSize}px`,
+                height: `${cardDimensions.cardSize}px`,
               }}
             />
 
-            {/* Product Card 2 - Top Right */}
+            {/* Product Card 2 - Top Right (offset down by 1/10 of card size) */}
             <ProductCard
               image={t.home.productCards[1].image}
               title={t.home.productCards[1].title}
               description={t.home.productCards[1].description}
               url={t.home.productCards[1].url}
+              cardSize={cardDimensions.cardSize}
               style={{
                 position: "absolute",
-                top: "5rem",
-                right: "300px",
-                width: "30rem",
+                top: `${cardDimensions.cardSize * 0.1}px`,
+                right: `${cardDimensions.gap}px`,
+                width: `${cardDimensions.cardSize}px`,
+                height: `${cardDimensions.cardSize}px`,
               }}
             />
 
-            {/* Product Card 3 - Middle Left */}
+            {/* Product Card 3 - Bottom Left (1.3 * gap from left) */}
             <ProductCard
               image={t.home.productCards[2].image}
               title={t.home.productCards[2].title}
               description={t.home.productCards[2].description}
               url={t.home.productCards[2].url}
+              cardSize={cardDimensions.cardSize}
               style={{
                 position: "absolute",
-                top: "80vh",
-                left: "400px",
-                width: "30rem",
+                top: `${cardDimensions.cardSize * 1.5}px`,
+                left: `${cardDimensions.gap * 1.1}px`,
+                width: `${cardDimensions.cardSize}px`,
+                height: `${cardDimensions.cardSize}px`,
               }}
             />
 
-            {/* Product Card 4 - Bottom Right */}
+            {/* Product Card 4 - Bottom Right (1.3 * gap from right, offset down by 2/10 of card size) */}
             <ProductCard
               image={t.home.productCards[3].image}
               title={t.home.productCards[3].title}
               description={t.home.productCards[3].description}
               url={t.home.productCards[3].url}
+              cardSize={cardDimensions.cardSize}
               style={{
                 position: "absolute",
-                top: "100vh",
-                right: "400px",
-                width: "30rem",
+                top: `${
+                  cardDimensions.cardSize * 1.5 + cardDimensions.cardSize * 0.2
+                }px`,
+                right: `${cardDimensions.gap * 1.1}px`,
+                width: `${cardDimensions.cardSize}px`,
+                height: `${cardDimensions.cardSize}px`,
               }}
             />
 
@@ -373,9 +449,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Animated Background Section - Only render when scrollY > 2600 */}
-      {scrollY > 2600 ? (
+      {/* Animated Background Section - Only render when scrollY > bgStart */}
+      {scrollY > animationTriggers.bgStart ? (
         <section
+          ref={companySectionRef}
           id="companysection"
           className="relative min-h-[200vh] lg:min-h-[200vh] overflow-hidden"
         >
@@ -384,11 +461,17 @@ export default function HomePage() {
             className="hidden lg:block fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
             style={{
               backgroundImage: "url(/assets/images/companybggg.png)",
-              width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
-              height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
+              width: `${Math.min(
+                100,
+                Math.max(20, (scrollY - animationTriggers.bgStart) / 10)
+              )}vw`,
+              height: `${Math.min(
+                100,
+                Math.max(30, (scrollY - animationTriggers.bgStart) / 8)
+              )}vh`,
               opacity: partnersApproaching
                 ? 0
-                : Math.min(1, (scrollY - 2600) / 400),
+                : Math.min(1, (scrollY - animationTriggers.bgStart) / 400),
             }}
           />
 
@@ -397,11 +480,17 @@ export default function HomePage() {
             className="lg:hidden fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out pointer-events-none"
             style={{
               backgroundImage: "url(/assets/images/mobilebg2.png)",
-              width: `${Math.min(100, Math.max(20, (scrollY - 2600) / 10))}vw`,
-              height: `${Math.min(100, Math.max(30, (scrollY - 2600) / 8))}vh`,
+              width: `${Math.min(
+                100,
+                Math.max(20, (scrollY - animationTriggers.bgStart) / 10)
+              )}vw`,
+              height: `${Math.min(
+                100,
+                Math.max(30, (scrollY - animationTriggers.bgStart) / 8)
+              )}vh`,
               opacity: partnersApproaching
                 ? 0
-                : Math.min(1, (scrollY - 2600) / 400),
+                : Math.min(1, (scrollY - animationTriggers.bgStart) / 400),
             }}
           />
 
@@ -411,37 +500,66 @@ export default function HomePage() {
             style={{
               opacity: partnersApproaching
                 ? 0
-                : scrollY > 3600
-                ? Math.min(0.6, (scrollY - 3600) / 800)
+                : scrollY > animationTriggers.contentStart
+                ? Math.min(
+                    0.6,
+                    (scrollY - animationTriggers.contentStart) / 800
+                  )
                 : 0,
             }}
           />
 
           {/* Content Overlay - Desktop */}
           <div
-            className="hidden lg:flex fixed inset-0 items-center justify-end pr-60 z-10 pointer-events-none"
+            className="hidden lg:flex fixed inset-0 items-center z-10 pointer-events-none"
             style={{
               opacity: partnersApproaching
                 ? 0
-                : Math.max(0, Math.min(1, (scrollY - 3600) / 800)),
+                : Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (scrollY - animationTriggers.contentStart) / 800
+                    )
+                  ),
+              justifyContent: "flex-end",
+              paddingRight: "5vw", // 5% from the right edge
             }}
           >
             <div
-              className="text-left text-white px-8 max-w-3xl"
+              className="text-left text-white px-8 max-w-2xl"
               style={{
                 pointerEvents: partnersApproaching ? "none" : "auto",
+                marginRight: "3vw", // Additional margin to ensure past middle
               }}
             >
-              <h2 className="text-4xl lg:text-6xl font-bold mb-8 tracking-wide">
+              <h2
+                className="font-bold mb-8 tracking-wide"
+                style={{
+                  fontSize: `${Math.max(2, 3.5 / scaleFactor)}rem`,
+                }}
+              >
                 {t.home.companyTitle}
               </h2>
-              <p className="text-lg lg:text-xl mb-8 leading-relaxed">
+              <p
+                className="mb-8 leading-relaxed"
+                style={{
+                  fontSize: `${Math.max(1, 1.25 / scaleFactor)}rem`,
+                }}
+              >
                 {t.home.companyText}
               </p>
 
               <Link
                 href="/company"
-                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
+                style={{
+                  fontSize: `${Math.max(0.9, 1.125 / scaleFactor)}rem`,
+                  padding: `${Math.max(0.75, 1 / scaleFactor)}rem ${Math.max(
+                    1.5,
+                    2 / scaleFactor
+                  )}rem`,
+                }}
               >
                 {t.home.learnMore} →{" "}
               </Link>
@@ -454,7 +572,13 @@ export default function HomePage() {
             style={{
               opacity: partnersApproaching
                 ? 0
-                : Math.max(0, Math.min(1, (scrollY - 3600) / 800)),
+                : Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (scrollY - animationTriggers.contentStart) / 800
+                    )
+                  ),
             }}
           >
             <div
@@ -463,16 +587,33 @@ export default function HomePage() {
                 pointerEvents: partnersApproaching ? "none" : "auto",
               }}
             >
-              <h2 className="text-2xl font-bold mb-4 tracking-wide">
+              <h2
+                className="font-bold mb-4 tracking-wide"
+                style={{
+                  fontSize: `${Math.max(1.25, 1.5 / scaleFactor)}rem`,
+                }}
+              >
                 {t.home.companyTitle}
               </h2>
-              <p className="text-sm mb-6 leading-relaxed">
+              <p
+                className="mb-6 leading-relaxed"
+                style={{
+                  fontSize: `${Math.max(0.875, 0.875 / scaleFactor)}rem`,
+                }}
+              >
                 {t.home.companyText}
               </p>
 
               <Link
                 href="/company"
-                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-sm transition-all duration-300 transform hover:scale-105"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
+                style={{
+                  fontSize: `${Math.max(0.75, 0.875 / scaleFactor)}rem`,
+                  padding: `${Math.max(0.5, 0.75 / scaleFactor)}rem ${Math.max(
+                    1,
+                    1.5 / scaleFactor
+                  )}rem`,
+                }}
               >
                 {t.home.learnMore} →{" "}
               </Link>

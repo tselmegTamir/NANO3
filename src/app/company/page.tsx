@@ -147,7 +147,7 @@ export default function CompanyPage() {
         <div id="aboutus"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-16">
-            <h2 className="text-3xl sm:text-5xl font-bold text-[#0E7453] mb-4 sm:mb-8">
+            <h2 className="text-3xl sm:text-5xl font-bold text-gray-900 mb-4 sm:mb-8">
               {t.company.aboutTitle}
             </h2>
             <p className="text-sm sm:text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
@@ -160,7 +160,7 @@ export default function CompanyPage() {
       {/* Company Values - Interactive Cards */}
       <section id="corevalues" className="py-12 sm:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-5xl font-bold text-[#0E7453] text-center mb-8 sm:mb-16">
+          <h2 className="text-3xl sm:text-5xl font-bold text-gray-900 text-center mb-8 sm:mb-16">
             {t.company.valuesTitle}
           </h2>
 
@@ -523,7 +523,7 @@ export default function CompanyPage() {
       </section>
 
       {/* Information Security Policy Section */}
-      <section id="infosec" className="py-12 sm:py-24 bg-white">
+      <section id="infosec" className="py-12 sm:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-4xl font-bold text-center text-gray-900 mb-8 sm:mb-16">
             {t.company.securityPolicyTitle}
@@ -576,151 +576,27 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      {/* Staff Profiles Section - Хамт олон */}
-      <section id="team" className="py-12 sm:py-24 bg-white">
+      {/* Company Structure Section */}
+      <section id="structure" className="py-12 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-8 sm:mb-16">
-            <h2 className="text-3xl sm:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              {t.company.teamTitle}
-            </h2>
-            <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8">
-              {t.company.teamDescription}
-            </p>
+          <h2 className="text-3xl sm:text-5xl font-bold text-gray-900 text-center mb-8 sm:mb-16">
+            {t.company.structureTitle}
+          </h2>
 
-            {/* Company Structure Button */}
-            <button
-              onClick={() => setIsStructureModalOpen(true)}
-              className="inline-flex items-center px-5 sm:px-8 py-3 sm:py-4 bg-[#0E7453] text-white text-base sm:text-lg font-semibold rounded-xl hover:bg-[#0E7453]/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              <svg
-                className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
-              {t.company.structureButton}
-            </button>
-          </div>
-
-          {/* Staff Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-            {staffMembers.map((member) => (
-              <div
-                key={member.id}
-                className="group bg-gray-50 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-              >
-                {/* Image */}
-                <div className="relative h-64 sm:h-72 overflow-hidden bg-gray-200">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-
-                {/* Info */}
-                <div className="p-4 sm:p-6 text-center">
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-2">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                    {member.position}
-                  </p>
-                </div>
-              </div>
-            ))}
+          {/* Organization Chart Container */}
+          <div className="w-full flex items-center justify-center">
+            <img
+              src="/assets/images/ORG-CHART.svg"
+              alt="Байгууллагын бүтэц"
+              className="w-full h-auto max-w-full"
+              style={{ maxHeight: "145vh", objectFit: "contain" }}
+            />
           </div>
         </div>
       </section>
 
-      {/* Company Structure Modal */}
-      {isStructureModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-          onClick={() => setIsStructureModalOpen(false)}
-        >
-          <div
-            className="relative bg-white rounded-3xl shadow-2xl w-full h-full max-w-[95vw] max-h-[95vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setIsStructureModalOpen(false)}
-              className="absolute top-3 right-3 sm:top-6 sm:right-6 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-[#0E7453] text-white rounded-full flex items-center justify-center hover:bg-[#0E7453]/90 transition-colors shadow-lg hover:scale-110 transform duration-200"
-            >
-              <svg
-                className="w-5 h-5 sm:w-6 sm:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-
-            {/* Modal Content */}
-            <div className="p-4 sm:p-8 h-full overflow-y-auto">
-              {/* Modal Header */}
-              <div className="mb-4 sm:mb-6">
-                <div className="flex items-center space-x-3 sm:space-x-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#0E7453] rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <svg
-                      className="w-7 h-7 sm:w-10 sm:h-10 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                      {t.company.structureModalTitle}
-                    </h2>
-                    <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-[#0E7453]">
-                      {t.company.structureModalSubtitle}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-
-              {/* Organization Chart SVG - Full Screen */}
-              <div className="flex items-center justify-center w-full h-[calc(100%-120px)]">
-                <img
-                  src="/assets/images/ORG-CHART.svg"
-                  alt="Байгууллагын бүтэц"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Documents Section - PDF Links */}
-      <section
-        id="documents"
-        className="py-12 sm:py-20 md:py-[100px] bg-gray-50"
-      >
+      <section id="documents" className="py-12 sm:py-20 md:py-[100px] bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">

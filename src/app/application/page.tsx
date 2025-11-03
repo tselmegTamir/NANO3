@@ -93,7 +93,7 @@ export default function ApplicationPage() {
       {/* Hero Section with App Slider */}
       <section
         id="screens"
-        className="relative w-full bg-gradient-to-br from-gray-50 to-gray-100"
+        className="relative w-full bg-white"
       >
         {/* Header */}
         <div className="relative z-10 pt-32 pb-12 text-center">
