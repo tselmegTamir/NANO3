@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from '@/context/LanguageContext';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Нано Капитал ББСБ",
@@ -20,9 +21,10 @@ export default function RootLayout({
         <main className="min-h-screen">
           <LanguageProvider>
           {children}
-          <Analytics />
         </LanguageProvider>
         </main>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

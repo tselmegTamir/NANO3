@@ -70,7 +70,7 @@ export const translations = {
       ],
       companyTitle: "About the Company",
       companyText:
-        '"Nano Capital MFB" LLC was established on July 7, 2014, and officially began operations in Ulaanbaatar after receiving a special license from the Financial Regulatory Commission of Mongolia on November 5, 2014, decree number 395, to conduct non-bank financial activities.',
+        '"Nano Capital NBFI" LLC was established on July 7, 2014, and officially began operations in Ulaanbaatar after receiving a special license from the Financial Regulatory Commission of Mongolia on November 5, 2014, decree number 395, to conduct non-bank financial activities.',
       partnersTitle: "Partner Organizations",
     },
 
