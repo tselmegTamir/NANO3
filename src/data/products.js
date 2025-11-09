@@ -64,7 +64,7 @@ export const productsData = {
       id: "salary-loan",
       title: "Salary Loan",
       description:
-        "You can get a loan even if you don't receive your salary through XasBank. It's enough to just pay social insurance.",
+        "This is a loan product designed for everyone with salary income secured by social insurance.",
       image: "/assets/images/Salary.png",
       conditions: {
         amount: "Up to 10 million MNT",
@@ -200,7 +200,7 @@ export const productsData = {
       id: "salary-loan",
       title: "Цалингийн зээл",
       description:
-        "Та ХасБанкаар цалингаа авдаггүй байсан ч зээл авах боломжтой. Ердөө НДШ төлдөг байхад хангалттай.",
+        "Нийгмийн даатгалаар баталгаажсан цалингийн орлоготой хүн бүрд зориулсан зээлийн бүтээгдэхүүн юм.",
       image: "/assets/images/Salary.png",
       conditions: {
         amount: "10 сая төгрөг хүртэл",
