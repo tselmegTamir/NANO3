@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700&display=swap');
 
   .app-page {
     --green:#157a55;--green-deep:#0e5e41;--green-900:#072a1d;--green-800:#0b3a28;
@@ -18,7 +18,7 @@ const STYLES = `
   }
   .app-page *{margin:0;padding:0;box-sizing:border-box}
   .app-page h1,.app-page h2,.app-page h3,.app-page .display{
-    font-family:"Unbounded",sans-serif;letter-spacing:-0.02em;line-height:1.05;
+    font-family:"Geologica",sans-serif;letter-spacing:-0.02em;line-height:1.05;
   }
   .app-page a{color:inherit;text-decoration:none}
   .app-page img{display:block;max-width:100%}
@@ -141,7 +141,7 @@ const STYLES = `
   }
   .app-page .tour-item .ph .scr{border-radius:25px;overflow:hidden}
   .app-page .tour-item .ph .nt{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:72px;height:20px;background:#0a2419;border-radius:999px;z-index:2}
-  .app-page .tour-item h4{font-family:"Unbounded";font-size:16px;font-weight:600}
+  .app-page .tour-item h4{font-family:"Geologica";font-size:16px;font-weight:600}
   .app-page .tour-item span{color:var(--muted-2);font-size:13px}
 
   /* steps */
@@ -149,7 +149,7 @@ const STYLES = `
   .app-page .steps .wrap{padding:80px 24px}
   .app-page .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:46px}
   .app-page .step{position:relative;padding-top:18px}
-  .app-page .step .n{font-family:"Unbounded";font-size:42px;font-weight:700;color:var(--mint);opacity:.95}
+  .app-page .step .n{font-family:"Geologica";font-size:42px;font-weight:700;color:var(--mint);opacity:.95}
   .app-page .step h4{font-size:18px;font-weight:600;margin:10px 0 6px}
   .app-page .step p{color:#a9d6bf;font-size:14px}
   .app-page .step::before{content:"";position:absolute;top:34px;left:54px;right:-22px;height:2px;background:rgba(159,240,196,0.25)}
