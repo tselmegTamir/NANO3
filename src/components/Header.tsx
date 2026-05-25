@@ -293,6 +293,7 @@ const Header = () => {
                 width={135}
                 height={39}
                 className="mt-0"
+                loading="eager"
               />
             </Link>
           </div>
@@ -400,6 +401,7 @@ const Header = () => {
                 width={24}
                 height={16}
                 className="rounded-sm object-cover"
+                style={{ height: 'auto' }}
               />
               <span className="text-[10px] lg:text-sm font-medium text-gray-700">
                 {currentLangCode}
