@@ -102,7 +102,7 @@ export const productsData = {
       image: "/assets/images/Business.png",
       conditions: {
         amount: "Up to 300 million MNT /Up to 50%-60% of collateral value/",
-        interestRate: "2.9-5%",
+        interestRate: "2.9-4.5%",
         duration: "Up to 60 months",
         downPayment: "",
         collateral:
@@ -238,7 +238,7 @@ export const productsData = {
       image: "/assets/images/Business.png",
       conditions: {
         amount: "300 сая төгрөг хүртэл /Барьцаа хөрөнгийн 50%-60% хүртэл/",
-        interestRate: "2.9-5%",
+        interestRate: "2.9-4.5%",
         duration: "60 сар хүртэл",
         downPayment: "",
         collateral:
