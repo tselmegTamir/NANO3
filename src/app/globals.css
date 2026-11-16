@@ -86,7 +86,7 @@
     background: transparent;
   }
 
-  input[type="range"].slider::-webkit-slider-track {
+  input[type="range"].slider::-webkit-slider-runnable-track {
     width: 100%;
     height: 8px;
     background: linear-gradient(

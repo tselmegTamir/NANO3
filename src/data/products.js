@@ -68,7 +68,7 @@ export const productsData = {
       image: "/assets/images/Salary.png",
       conditions: {
         amount: "Up to 10 million MNT",
-        interestRate: "2.5-5%",
+        interestRate: "2.5-4.5%",
         duration: "Up to 60 months",
         downPayment: "",
         collateral: "Future salary income",
@@ -204,7 +204,7 @@ export const productsData = {
       image: "/assets/images/Salary.png",
       conditions: {
         amount: "10 сая төгрөг хүртэл",
-        interestRate: "2.5-5%",
+        interestRate: "2.5-4.5%",
         duration: "60 сар хүртэл",
         downPayment: "",
         collateral: "Ирээдүйд орж ирэх цалингийн орлого",

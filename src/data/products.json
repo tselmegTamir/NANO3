@@ -64,7 +64,7 @@
     "image": "/assets/images/Salary.png",
     "conditions": {
       "amount": "10 сая төгрөг хүртэл",
-      "interestRate": "2.5-5%",
+      "interestRate": "2.5-4.5%",
       "duration": "60 сар хүртэл",
       "downPayment": "",
       "collateral": "Ирээдүйд орж ирэх цалингийн орлого"
